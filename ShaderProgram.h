@@ -36,7 +36,7 @@ namespace EZGL {
 		void setTextureSlot(int slot);
 
 		void draw(Drawable& d);
-		void draw(InstancedDrawable& d);
+		void drawInstanced(InstancedDrawable& d);
 	};
 
 	void printShaderInfoLog(int shader);

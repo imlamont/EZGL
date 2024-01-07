@@ -45,11 +45,8 @@ namespace EZGL {
 
 		glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &infoLogLen);
 
-		// should additionally check for OpenGL errors here
-
 		if (infoLogLen > 0) {
 			infoLog = new GLchar[infoLogLen];
-			// error check for fail to allocate memory omitted
 			glGetProgramInfoLog(prog, infoLogLen, &charsWritten, infoLog);
 			std::cout << "LinkInfoLog:" << "\n" << infoLog << "\n";
 			delete[] infoLog;
@@ -59,23 +56,21 @@ namespace EZGL {
 	void loadShaderFile(GLuint shader, const char* file) {
 		std::vector<char> vec;
 		int size;
-		std::ifstream fs(file);
+		std::ifstream fs(file, std::ifstream::in);
 
 		while (!fs.eof()) {
 			vec.push_back(fs.get());
 		}
+		if (vec.back() == -1) {
+			vec.pop_back();
+			vec.push_back('\0');
+		}
 
-		size = vec.size() + 1;
-		char* str = new char[size];
+		size = vec.size();
+		char* str = vec.data();
 
-		strcpy_s(str, size, vec.data());
-		int* lengthArr = new int[1];
-		lengthArr[0] = size;
+		glShaderSource(shader, 1, (const char**)&str, 0);
 
-		glShaderSource(shader, 1, (const char**)&str, (const int*)lengthArr);
-
-		delete[] lengthArr;
-		delete[] str;
 		fs.close();
 		return;
 	}
@@ -105,6 +100,28 @@ namespace EZGL {
 		// link
 		glAttachShader(prog, vertShader);
 		glAttachShader(prog, fragShader);
+
+		/*attrPos = 1;
+		glBindAttribLocation(prog, attrPos, "vPos");
+		attrNor = 2;
+		glBindAttribLocation(prog, attrNor, "vNor");
+		attrCol = 3;
+		glBindAttribLocation(prog, attrCol, "vCol");
+		attrUV = 4;
+		glBindAttribLocation(prog, attrUV, "vUV");
+		attrPosOffset = 5;
+		glBindAttribLocation(prog, attrPosOffset, "vPosOffset");
+		attrColOffset = 6;
+		glBindAttribLocation(prog, attrColOffset, "vColOffset");
+		unifModel = 7;
+		glBindAttribLocation(prog, unifModel, "uModel");
+		unifModelInvTr = 8;
+		glBindAttribLocation(prog, unifModelInvTr, "uModelInvTr");
+		unifViewProj = 9;
+		glBindAttribLocation(prog, unifViewProj, "uViewProj");
+		unifTexture = 10;
+		glBindAttribLocation(prog, unifTexture, "uTexture");*/
+
 		glLinkProgram(prog);
 
 		// check link status
@@ -113,7 +130,7 @@ namespace EZGL {
 		if (!linked) {
 			printLinkInfoLog(prog);
 		}
-
+		
 		// get all attributes
 		attrPos = glGetAttribLocation(prog, "vPos");
 		attrNor = glGetAttribLocation(prog, "vNor");
@@ -126,7 +143,6 @@ namespace EZGL {
 		unifModelInvTr = glGetUniformLocation(prog, "uModelInvTr");
 		unifViewProj = glGetUniformLocation(prog, "uViewProj");
 		unifTexture = glGetUniformLocation(prog, "uTexture");
-
 	}
 
 	void ShaderProgram::useThis() {
@@ -200,10 +216,10 @@ namespace EZGL {
 		printGLErrorLog();
 	}
 
-	void ShaderProgram::draw(InstancedDrawable& d) {
+	void ShaderProgram::drawInstanced(InstancedDrawable& d) {
 		useThis();
 
-		if (d.getElems() < 0) return;
+		if (d.getElems() < 0 || d.getInstances() < 0) return;
 
 		if (attrPos != -1 && d.bindPos()) {
 			glEnableVertexAttribArray(attrPos);
