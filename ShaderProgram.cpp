@@ -58,24 +58,25 @@ namespace EZGL {
 
 	void loadShaderFile(GLuint shader, const char* file) {
 		std::vector<char> vec;
-		int size;
+		int size = 0;
 		std::ifstream fs(file);
 
+		if (!fs.is_open()) {
+			std::cerr << "unable to open shader file: " << file;
+		}
+
 		while (!fs.eof()) {
+			size++;
 			vec.push_back(fs.get());
 		}
 
-		size = vec.size() + 1;
-		char* str = new char[size];
+		vec.push_back('\0');
+		size++;
 
-		strcpy_s(str, size, vec.data());
-		int* lengthArr = new int[1];
-		lengthArr[0] = size;
+		const char* str = vec.data();
 
-		glShaderSource(shader, 1, (const char**)&str, (const int*)lengthArr);
+		glShaderSource(shader, 1, &str, (const int*)&size);
 
-		delete[] lengthArr;
-		delete[] str;
 		fs.close();
 		return;
 	}
