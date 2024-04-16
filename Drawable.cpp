@@ -1,4 +1,4 @@
-#include "Drawable.h"
+#include "Drawable.hpp"
 
 namespace EZGL {
 	Drawable::Drawable()

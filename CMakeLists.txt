@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(EZGL)
+project(ezgl)
 
 # main build files
 set(HEADER_FILES 
@@ -16,10 +16,11 @@ set(CPP_FILES
     ShaderProgram.cpp
     )
 
-add_library(${PROJECT_NAME} STATIC "${CPP_FILES};${HEADER_FILES}")
+set(EXECUTABLE_NAME ${PROJECT_NAME})
+add_library(${EXECUTABLE_NAME} STATIC "${CPP_FILES};${HEADER_FILES}")
 
 # include glm
 add_subdirectory(./lib/glm)
-target_link_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/lib/glm/)
-target_link_libraries(${PROJECT_NAME} glm)
-include_directories(${CMAKE_SOURCE_DIR}/lib/glm/)
+target_link_directories(${EXECUTABLE_NAME} PRIVATE ./lib/glm/glm)
+target_link_libraries(${EXECUTABLE_NAME} glm)
+include_directories(./lib/glm/)

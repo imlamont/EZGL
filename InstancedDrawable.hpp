@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "Drawable.h"
+#include "Drawable.hpp"
 
 namespace EZGL {
 

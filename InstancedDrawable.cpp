@@ -1,4 +1,4 @@
-#include "InstancedDrawable.h"
+#include "InstancedDrawable.hpp"
 
 namespace EZGL {
 	InstancedDrawable::InstancedDrawable()

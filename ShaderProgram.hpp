@@ -3,8 +3,8 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "Drawable.h"
-#include "InstancedDrawable.h"
+#include "Drawable.hpp"
+#include "InstancedDrawable.hpp"
 
 namespace EZGL {
 	class ShaderProgram

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#include "ShaderProgram.h"
+#include "ShaderProgram.hpp"
 
 namespace EZGL {
 	ShaderProgram::ShaderProgram()
