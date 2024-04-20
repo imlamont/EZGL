@@ -3,10 +3,10 @@ project(ezgl)
 
 # main build files
 set(HEADER_FILES 
-    Camera.h
-    Drawable.h
-    InstancedDrawable.h
-    ShaderProgram.h
+    Camera.hpp
+    Drawable.hpp
+    InstancedDrawable.hpp
+    ShaderProgram.hpp
     )
 
 set(CPP_FILES
@@ -24,3 +24,9 @@ add_subdirectory(./lib/glm)
 target_link_directories(${EXECUTABLE_NAME} PRIVATE ./lib/glm/glm)
 target_link_libraries(${EXECUTABLE_NAME} glm)
 include_directories(./lib/glm/)
+
+# glew
+add_subdirectory(./lib/glew)
+target_link_directories(${EXECUTABLE_NAME} PRIVATE ./lib/glew/Debug)
+target_link_libraries(${PROJECT_NAME} glew_static)
+include_directories(./lib/glew/include/)
