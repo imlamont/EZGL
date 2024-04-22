@@ -28,5 +28,5 @@ include_directories(./lib/glm/)
 # glew
 add_subdirectory(./lib/glew)
 target_link_directories(${EXECUTABLE_NAME} PRIVATE ./lib/glew/Debug)
-target_link_libraries(${PROJECT_NAME} glew_static)
+target_link_libraries(${PROJECT_NAME} libglew_static)
 include_directories(./lib/glew/include/)
